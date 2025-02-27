@@ -163,4 +163,32 @@ document.addEventListener("DOMContentLoaded", async function () {
     tradeForm.submit();
     pristine.destroy();
   }
+
+  // Recent trades table
+  function generateTable(trades) {
+    const tableBody = document.querySelector("#tradesTable tbody");
+    tableBody.innerHTML = "";
+    trades.forEach((trade) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+      <td>${trade.date}</td>
+      <td>${trade.symbol}</td>
+      <td>${trade.direction}</td>
+      <td>${trade.market}</td>
+      <td>${trade.entryPrice}</td>
+      <td>${trade.exitPrice}</td>
+      <td>${trade.quantity}</td>
+      <td>${trade.investment}</td>
+      <td>${trade.pnl}</td>
+      <td>${trade.roi}</td>
+      <td>${trade.notes}</td>
+      <td><button class="edit-button" data-id="${trade.id}">Edit</button>
+      <button class="delete-button" data-id="${trade.id}">Delete</button></td>
+      `;
+      tableBody.appendChild(row);
+    });
+  }
+
+  generateTable(window.tradeManager.trades);
+
 });
