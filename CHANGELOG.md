@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.1.1] - 2025-02-27
+
+### Added
+- Recent Trades Table
+  - Display of 10 most recent trades
+  - Proper formatting for dates, numbers, currency, and percentages
+  - Edit and Delete functionality for each trade
+  - Error handling for missing or invalid data
+- Custom Confirmation Dialog
+  - Styled modal for delete confirmations
+  - Theme-aware colors and styling
+  - Multiple close options (buttons, click-outside)
+  - Promise-based implementation for async/await usage
+  - Event listener cleanup
+
+### Enhanced
+- Form Validation
+  - Real-time numeric input validation
+  - Visual feedback with success/error states
+  - Support for decimal numbers
+  - Validation state persistence
+
 ## [0.1.0] - 2025-02-27
 
 ### Added

@@ -180,8 +180,53 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
+  // Custom confirmation dialog
+  const confirmDialog = document.getElementById('confirmDialog');
+  const closeConfirm = document.querySelector('.close-confirm');
+  const confirmCancel = document.getElementById('confirmCancel');
+  const confirmOk = document.getElementById('confirmOk');
+  const confirmMessage = document.getElementById('confirmMessage');
+  
+  function showConfirmDialog(message) {
+    return new Promise((resolve) => {
+      confirmMessage.textContent = message;
+      confirmDialog.style.display = 'block';
+
+      function handleConfirm() {
+        confirmDialog.style.display = 'none';
+        cleanup();
+        resolve(true);
+      }
+
+      function handleCancel() {
+        confirmDialog.style.display = 'none';
+        cleanup();
+        resolve(false);
+      }
+
+      function handleClickOutside(event) {
+        if (event.target === confirmDialog) {
+          handleCancel();
+        }
+      }
+
+      function cleanup() {
+        confirmOk.removeEventListener('click', handleConfirm);
+        confirmCancel.removeEventListener('click', handleCancel);
+        closeConfirm.removeEventListener('click', handleCancel);
+        window.removeEventListener('click', handleClickOutside);
+      }
+
+      confirmOk.addEventListener('click', handleConfirm);
+      confirmCancel.addEventListener('click', handleCancel);
+      closeConfirm.addEventListener('click', handleCancel);
+      window.addEventListener('click', handleClickOutside);
+    });
+  }
+
   async function deleteTrade(tradeId) {
-    if (confirm('Are you sure you want to delete this trade?')) {
+    const confirmed = await showConfirmDialog('Are you sure you want to delete this trade?');
+    if (confirmed) {
       try {
         const index = window.tradeManager.trades.findIndex(t => t.id === tradeId);
         if (index !== -1) {
