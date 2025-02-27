@@ -1,0 +1,337 @@
+.main-content {
+    margin: 2rem auto;
+}
+/* Calendar View Styles */
+.calendar-container {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.year-selector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: 1rem;
+}
+
+.year-selector button {
+    background: none;
+    border: none;
+    color: var(--accent-color);
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.year-selector span {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.months-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.month-card {
+    background: var(--bg-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.month-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.month-card h3 {
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.month-pnl {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.month-pnl.positive {
+    color: #27ae60;
+}
+
+.month-pnl.negative {
+    color: #e74c3c;
+}
+
+.monthly-view {
+    margin-top: 1.5rem;
+}
+
+.monthly-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.btn-back {
+    background: none;
+    border: 1px solid var(--accent-secondary-light);
+    border-radius: 8px;
+    color: var(--accent-color);
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3 ease;
+}
+
+.btn-back:hover {
+    background-color: var(--accent-primary-light);
+    color: #fff;
+}
+
+.monthly-header h2 {
+    margin: 0 2rem;
+    color: var(--text-color);
+}
+
+.weekday-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: 500;
+    color: #7f8c8d;
+    margin-bottom: 0.5rem;
+}
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+}
+
+.day-cell {
+    aspect-ratio: 1;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
+    min-height: 80px;
+    padding-bottom: 25px;
+}
+
+.day-cell.win {
+    background-color: rgba(39, 174, 96, 0.1);
+    border-color: #27ae60;
+}
+
+.day-cell.loss {
+    background-color: rgba(231, 76, 60, 0.1);
+    border-color: #e74c3c;
+}
+
+.day-cell:hover {
+    transform: scale(1.05);
+    z-index: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.day-cell.week-summary {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.day-number {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+}
+
+.day-pnl {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.day-pnl.positive {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.day-pnl.negative {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.day-cell.inactive {
+    background: var(--bg-color);
+    color: #bdc3c7;
+}
+
+.day-cell.today {
+    border-color: var(--accent-color);
+    background: var(--hover-bg);
+}
+
+.month-card.profit {
+    border: 1px solid #27ae60;
+    background: linear-gradient(to bottom right, var(--bg-color), rgba(39, 174, 96, 0.1));
+}
+
+.month-card.loss {
+    border: 1px solid #e74c3c;
+    background: linear-gradient(to bottom right, var(--bg-color), rgba(231, 76, 60, 0.1));
+}
+
+.month-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.week-total {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 4px;
+    font-size: 0.8rem;
+    text-align: center;
+    background-color: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.week-total span {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.week-total small {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+.week-total.positive {
+    color: #27ae60;
+}
+
+.week-total.negative {
+    color: #e74c3c;
+}
+
+.fa-chevron-right:hover,
+.fa-chevron-left:hover {
+    color: var(--accent-color);
+    translate: scale(2);
+}
+
+@media (min-width: 1201px) {
+    .calendar-container {
+        width: 1100px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .calendar-container {
+        width: 900px;
+    }
+}
+
+@media (max-width: 992px) {
+    .calendar-container {
+        width: 600px;
+    }
+}
+
+@media (max-width: 772px) {
+    .calendar-container {
+        width: 400px;
+    }
+
+    .months-grid {
+        grid-template-columns: auto;
+    }
+
+    .days-grid {
+        grid-template-columns: repeat(7, 50px);
+        gap: 0px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .calendar-container {
+        padding: 0.75rem;
+    }
+
+    .days-grid {
+        gap: 0.25rem;
+    }
+
+    .day-cell {
+        min-height: 40px;
+        padding: 0.25rem;
+        padding-bottom: 15px;
+    }
+
+    .day-number {
+        font-size: 0.75rem;
+    }
+
+    .day-pnl {
+        font-size: 0.7rem;
+    }
+
+    .weekday-header span {
+        font-size: 0.75rem;
+    }
+
+    .monthly-header {
+        margin-bottom: 1rem;
+    }
+
+    .monthly-header h2 {
+        font-size: 1.1rem;
+        margin: 0 1rem;
+    }
+
+    .btn-back {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .months-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .month-card {
+        padding: 1rem;
+    }
+
+    .month-card h3 {
+        font-size: 1rem;
+    }
+
+    .month-pnl {
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TradeLab - Settings</title>
+    <link rel="stylesheet" href="../shared.css" />
+    <link rel="stylesheet" href="../styles/sidebar.css">
+    <link rel="stylesheet" href="../styles/settings.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="nav-brand"><a href="../index.html">TradeLab</a></div>
+      <ul class="nav-links">
+        <li><a href="../index.html" class="active">Home</a></li>
+        <li><a href="../index.html#features">Features</a></li>
+        <li><a href="../index.html#pricing">Pricing</a></li>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="calendar-dashboard.html" class="cta-button active">Dashboard</a></li>
+      </ul>
+      <i id="hamburger" class="fa-solid fa-bars fa-xl fa-icon"></i>
+    </nav>
+
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <i class="fas fa-chart-line"></i>
+          <span>Trading Tools</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="trade-entry.html" class="sidebar-link">
+            <i class="fas fa-plus-circle"></i>
+            <span>Manual Entry</span>
+          </a>
+          <!-- <a href="import.html" class="sidebar-link">
+            <i class="fas fa-file-import"></i>
+            <span>Import Trades</span>
+          </a> -->
+          <a href="trade-history.html" class="sidebar-link">
+            <i class="fas fa-list"></i>
+            <span>All Trades</span>
+          </a>
+          <a href="analytics.html" class="sidebar-link">
+            <i class="fas fa-chart-bar"></i>
+            <span>Analytics</span>
+          </a>
+          <a href="market-insights.html" class="sidebar-link">
+            <i class="fas fa-globe"></i>
+            <span>Market Insights</span>
+          </a>
+          <a href="calendar-dashboard.html" class="sidebar-link">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Calendar</span>
+          </a>
+          <a href="settings.html" class="sidebar-link active">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+          </a>
+        </nav>
+      </aside>
+
+    <div class="settings-container">
+      <div class="settings-content">
+        <h1>Settings</h1>
+
+        <div class="settings-section">
+          <h2>Data Storage</h2>
+          <div class="settings-group">
+            <div class="setting-item">
+              <h3>Storage Type</h3>
+              <div class="storage-options">
+                <label class="storage-option">
+                  <input type="radio" name="storageType" value="indexedDB" checked>
+                  <div class="storage-option-content">
+                    <i class="fas fa-database"></i>
+                    <span>Local Storage</span>
+                    <small>Store data in your browser</small>
+                  </div>
+                </label>
+                <label class="storage-option">
+                  <input type="radio" name="storageType" value="supabase">
+                  <div class="storage-option-content">
+                    <i class="fas fa-cloud"></i>
+                    <span>Cloud Storage</span>
+                    <small>Store data securely in the cloud (20MB limit)</small>
+                  </div>
+                </label>
+                <label class="storage-option">
+                  <input type="radio" name="storageType" value="excel">
+                  <div class="storage-option-content">
+                    <i class="fas fa-file-excel"></i>
+                    <span>Excel</span>
+                    <small>Import/Export data via Excel files</small>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="setting-item">
+              <h3>Storage Usage</h3>
+              <div class="storage-info">
+                <div class="storage-stat">
+                  <label>Available Storage:</label>
+                  <span id="availableStorage">Calculating...</span>
+                </div>
+                <div class="storage-stat">
+                  <label>Used Storage:</label>
+                  <span id="usedStorage">Calculating...</span>
+                </div>
+                <div class="storage-stat">
+                  <label>Remaining Storage:</label>
+                  <span id="remainingStorage">Calculating...</span>
+                </div>
+                <div class="storage-progress">
+                  <div id="storageProgressBar" class="progress-bar"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            id="fileStorageOptions"
+            class="file-storage-options"
+            style="display: none"
+          >
+            <div class="file-path-section">
+              <label for="filePath">Storage Location:</label>
+              <div class="file-path-input">
+                <input type="text" id="filePath" readonly />
+                <input
+                  type="file"
+                  id="fileInput"
+                  style="display: none"
+                  webkitdirectory
+                  directory
+                  multiple
+                />
+                <button id="selectPath" class="btn-secondary">
+                  <i class="fas fa-folder-open"></i> Select Location
+                </button>
+              </div>
+            </div>
+
+            <div class="auto-backup">
+              <label>
+                <input type="checkbox" id="autoBackup" />
+                Enable automatic backups
+              </label>
+              <select id="backupInterval" disabled>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h2>Data Management</h2>
+          <div class="data-management">
+            <button id="exportData" class="btn-primary">
+              <i class="fas fa-file-export"></i> Export Trades
+            </button>
+            <button id="importData" class="btn-primary">
+              <i class="fas fa-file-import"></i> Import Trades
+            </button>
+            <button id="clearData" class="btn-danger">
+              <i class="fas fa-trash"></i> Clear All Data
+            </button>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h2>User Profile</h2>
+          <div class="settings-group">
+            <div class="setting-item">
+              <label for="username">Username</label>
+              <input type="text" id="username" class="form-input" placeholder="Enter new username">
+              <button id="updateUsername" class="btn-secondary">Update Username</button>
+            </div>
+            <div class="setting-item">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" class="form-input" placeholder="Enter new email">
+              <button id="updateEmail" class="btn-secondary">Update Email</button>
+            </div>
+            <div class="setting-item">
+              <label for="currentPassword">Current Password</label>
+              <input type="password" id="currentPassword" class="form-input" placeholder="Enter current password">
+            </div>
+            <div class="setting-item">
+              <label for="newPassword">New Password</label>
+              <input type="password" id="newPassword" class="form-input" placeholder="Enter new password">
+            </div>
+            <div class="setting-item">
+              <label for="confirmPassword">Confirm New Password</label>
+              <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm new password">
+              <button id="updatePassword" class="btn-secondary">Update Password</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Display Settings -->
+        <div class="settings-section">
+          <h2>Display Settings</h2>
+          <div class="settings-group">
+              <div class="setting-item">
+                  <label for="theme">Theme</label>
+                  <select id="theme">
+                      <option value="light">Light</option>
+                      <option value="dark">Dark</option>
+                      <option value="system">System Default</option>
+                  </select>
+              </div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <label for="dateFormat">Date Format:</label>
+          <select id="dateFormat">
+            <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+            <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+            <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+          </select>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="settings-section">
+          <h2>Notifications</h2>
+          <div class="settings-group">
+              <div class="setting-item checkbox">
+                  <label>
+                      <input type="checkbox" id="emailNotifications">
+                      Email notifications
+                  </label>
+              </div>
+          </div>
+        </div>
+
+        <div class="settings-actions">
+          <button id="saveSettings" class="btn-primary">
+            <i class="fas fa-save"></i> Save Settings
+          </button>
+          <button id="resetSettings" class="btn-secondary">
+            <i class="fas fa-undo"></i> Reset to Defaults
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3><a href="../index.html">TradeLab</a></h3>
+          <p>
+            Your personal trading journal to track and analyze your trading
+            performance.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#features">Features</a></li>
+            <li><a href="../index.html#pricing">Pricing</a></li>
+            <li><a href="../index.html#about">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="/pages/user-guide.html">User Guide</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="terms-of-use.html">Terms of Service</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="risk-disclosure.html">Risk Disclosure</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Follow Us</h3>
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/obi-juan-kenobi/" target="_blank"><i class="fab fa-linkedin" aria-label="LinkedIn"></i></a>
+            <a href="https://github.com/Obi-Juan-Kenobee" target="_blank"><i class="fab fa-github" aria-label="GitHub"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 TradeLab. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="../scripts/global.js"></script>
+    <script src="../scripts/TradeObjectHandler.js"></script>
+    <script src="../scripts/dashboard.js"></script>
+    <script src="../scripts/settings.js"></script>
+    <script src="../scripts/theme.js"></script>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "tradelab",
+  "version": "1.0.0",
+  "description": "Trade tracking and analysis platform",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1",
+    "pg": "^8.11.3",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  }
+}

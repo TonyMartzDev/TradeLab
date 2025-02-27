@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TradeLab - Contact Us</title>
+    <link rel="stylesheet" href="../shared.css" />
+    <link rel="stylesheet" href="../styles/contact.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+  <body>
+     <!-- Navigation Bar -->
+     <nav class="navbar">
+        <div class="nav-brand"><a href="../index.html">TradeLab</a></div>
+        <ul class="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../index.html#features">Features</a></li>
+          <li><a href="../index.html#pricing">Pricing</a></li>
+          <li><a href="../index.html#about">About</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+          <li><a href="calendar-dashboard.html" class="cta-button">Dashboard</a></li>
+        </ul>
+        <i id="hamburger" class="fa-solid fa-bars fa-xl fa-icon"></i>
+      </nav>
+
+    <div class="contact-container">
+      <div class="contact-content">
+        <h1>Contact Us</h1>
+        <p class="contact-intro">
+          Have questions, suggestions, or need support? We're here to help! Fill out the form below and we'll get back to you as soon as possible.
+        </p>
+
+        <form id="contactForm" class="contact-form">
+          <div class="form-group">
+            <label for="name">Name *</label>
+            <input type="text" id="name" name="name" required placeholder="Your name" autocomplete="name">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required placeholder="your.email@example.com" autocomplete="email">
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subject *</label>
+            <select id="subject" name="subject" required>
+              <option value="">Select a subject</option>
+              <option value="support">Technical Support</option>
+              <option value="feature">Feature Request</option>
+              <option value="feedback">General Feedback</option>
+              <option value="bug">Report a Bug</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" required placeholder="Please describe your inquiry in detail..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="submit-button">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+          </div>
+        </form>
+
+        <div class="contact-info">
+          <h2>Other Ways to Reach Us</h2>
+          <div class="contact-methods">
+            <div class="contact-method">
+              <i class="fas fa-envelope"></i>
+              <p>Email: support@tradelab.com</p>
+            </div>
+            <div class="contact-method">
+              <i class="fas fa-clock"></i>
+              <p>Support Hours: Monday - Friday, 9 AM - 5 PM EST</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><a href="../index.html">TradeLab</a></h3>
+                <p>Your personal trading journal to track and analyze your trading performance.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../index.html#features">Features</a></li>
+                    <li><a href="../index.html#pricing">Pricing</a></li>
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="/pages/user-guide.html">User Guide</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="terms-of-use.html">Terms of Service</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="risk-disclosure.html">Risk Disclosure</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Social</h3>
+                <div class="social-links">
+                  <a href="https://www.linkedin.com/in/obi-juan-kenobi/" target="_blank"><i class="fab fa-linkedin" aria-label="LinkedIn"></i></a>
+                  <a href="https://github.com/Obi-Juan-Kenobee" target="_blank"><i class="fab fa-github" aria-label="GitHub"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TradeLab. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../scripts/global.js"></script>
+    <script src="../scripts/contact.js"></script>
+    <script src="../scripts/authCheck.js"></script>
+  </body>
+</html>

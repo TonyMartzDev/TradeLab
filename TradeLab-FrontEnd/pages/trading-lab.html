@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Lab - TradeLab</title>
+    <link rel="stylesheet" href="../shared.css">
+    <link rel="stylesheet" href="../styles/sidebar.css">
+    <link rel="stylesheet" href="../styles/trading-lab.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-brand"><a href="../index.html">TradeLab</a></div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#features">Features</a></li>
+            <li><a href="../index.html#pricing">Pricing</a></li>
+            <li><a href="../index.html#about">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="calendar-dashboard.html" class="cta-button active">Dashboard</a></li>
+        </ul>
+        <i id="hamburger" class="fa-solid fa-bars fa-xl fa-icon"></i>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-chart-line"></i>
+                <span>Trading Tools</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="trade-entry.html" class="sidebar-link">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Manual Entry</span>
+                </a>
+                <a href="trade-history.html" class="sidebar-link">
+                    <i class="fas fa-list"></i>
+                    <span>All Trades</span>
+                </a>
+                <a href="analytics.html" class="sidebar-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="market-insights.html" class="sidebar-link">
+                    <i class="fas fa-globe"></i>
+                    <span>Market Insights</span>
+                </a>
+                <a href="trading-lab.html" class="sidebar-link active">
+                    <i class="fas fa-flask"></i>
+                    <span>Trading Lab</span>
+                </a>
+                <a href="calendar-dashboard.html" class="sidebar-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Calendar</span>
+                </a>
+                <a href="settings.html" class="sidebar-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="trading-lab-header">
+                <h1>Trading Lab - Powered by TradingView</h1>
+                <div class="symbol-search">
+                    <input type="text" placeholder="Search symbol..." id="symbolSearch">
+                    <button type="button" id="searchButton">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="trading-lab-grid">
+                <!-- Main Chart Section -->
+                <div class="widget-container chart-container">
+                    <div class="widget-header">
+                        <h2>Advanced Chart</h2>
+                        <div class="widget-controls">
+                            <button class="expand-button"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <div class="widget-content" id="tradingview-chart"></div>
+                </div>
+
+                <!-- Market Movers Section -->
+                <div class="widget-container market-movers">
+                    <div class="widget-header">
+                        <h2>Market Movers</h2>
+                        <div class="widget-controls">
+                            <button class="expand-button"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <div class="widget-content" id="market-movers-widget">
+                        <!-- TradingView Market Movers Widget will go here -->
+                    </div>
+                </div>
+
+                <!-- Technical Analysis Section -->
+                <div class="widget-container technical-analysis">
+                    <div class="widget-header">
+                        <h2>Technical Analysis</h2>
+                        <div class="widget-controls">
+                            <button class="expand-button"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <div class="widget-content" id="technical-analysis-widget">
+                        <!-- TradingView Technical Analysis Widget will go here -->
+                    </div>
+                </div>
+
+                <!-- Company Profile Section -->
+                <div class="widget-container company-profile">
+                    <div class="widget-header">
+                        <h2>Company Profile</h2>
+                        <div class="widget-controls">
+                            <button class="expand-button"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <div class="widget-content" id="company-profile-widget">
+                        <!-- TradingView Company Profile Widget will go here -->
+                    </div>
+                </div>
+
+                <!-- Financial Data Section -->
+                <div class="widget-container financials">
+                    <div class="widget-header">
+                        <h2>Financials</h2>
+                        <div class="widget-controls">
+                            <button class="expand-button"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <div class="widget-content" id="financials-widget">
+                        <!-- TradingView Fundamentals Widget will go here -->
+                    </div>
+                </div>
+
+                <!-- News Feed Section -->
+                <div class="widget-container news-feed">
+                    <div class="widget-header">
+                        <h2>News Feed</h2>
+                        <div class="widget-controls">
+                            <button class="expand-button"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <div class="widget-content" id="news-feed-widget">
+                        <!-- TradingView News Feed Widget will go here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About TradeLab</h3>
+                <p>Advanced trading analytics and portfolio management platform for serious traders.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../index.html#features">Features</a></li>
+                    <li><a href="../index.html#pricing">Pricing</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Trading Tools</h3>
+                <ul>
+                    <li><a href="trade-entry.html">Manual Entry</a></li>
+                    <li><a href="analytics.html">Analytics</a></li>
+                    <li><a href="market-insights.html">Market Insights</a></li>
+                    <li><a href="calendar-dashboard.html">Calendar</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TradeLab. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../scripts/theme-toggle.js"></script>
+    <script src="../scripts/trading-widgets.js"></script>
+</body>
+
+</html>
