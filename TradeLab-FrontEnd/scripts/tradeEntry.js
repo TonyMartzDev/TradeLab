@@ -165,26 +165,77 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   // Recent trades table
+  function safeValue(value, type = 'text') {
+    if (value === null || value === undefined) return '-';
+    switch(type) {
+      case 'currency':
+        return typeof value === 'number' ? 
+          value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '-';
+      case 'percentage':
+        return typeof value === 'number' ? `${(value * 100).toFixed(2)}%` : '-';
+      case 'number':
+        return typeof value === 'number' ? value.toFixed(2) : '-';
+      default:
+        return value.toString();
+    }
+  }
+
+  async function deleteTrade(tradeId) {
+    if (confirm('Are you sure you want to delete this trade?')) {
+      try {
+        const index = window.tradeManager.trades.findIndex(t => t.id === tradeId);
+        if (index !== -1) {
+          window.tradeManager.trades.splice(index, 1);
+          await window.tradeManager.saveTrades();
+          generateTable(window.tradeManager.trades);
+          showNotification('Trade deleted successfully!', 'success');
+        }
+      } catch (error) {
+        console.error('Error deleting trade:', error);
+        showNotification('Error deleting trade. Please try again.', 'error');
+      }
+    }
+  }
+
   function generateTable(trades) {
     const tableBody = document.querySelector("#tradesTable tbody");
+    if (!tableBody) {
+      console.error('Table body element not found');
+      return;
+    }
+
     tableBody.innerHTML = "";
-    trades.forEach((trade) => {
+    
+    // Get the 10 most recent trades
+    const recentTrades = [...trades].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
+    
+    recentTrades.forEach((trade) => {
       const row = document.createElement("tr");
       row.innerHTML = `
-      <td>${trade.date}</td>
-      <td>${trade.symbol}</td>
-      <td>${trade.direction}</td>
-      <td>${trade.market}</td>
-      <td>${trade.entryPrice}</td>
-      <td>${trade.exitPrice}</td>
-      <td>${trade.quantity}</td>
-      <td>${trade.investment}</td>
-      <td>${trade.pnl}</td>
-      <td>${trade.roi}</td>
-      <td>${trade.notes}</td>
-      <td><button class="edit-button" data-id="${trade.id}">Edit</button>
-      <button class="delete-button" data-id="${trade.id}">Delete</button></td>
+        <td>${formatDate(trade.date)}</td>
+        <td>${safeValue(trade.symbol)}</td>
+        <td>${safeValue(trade.direction)}</td>
+        <td>${safeValue(trade.market)}</td>
+        <td>${safeValue(trade.entryPrice, 'number')}</td>
+        <td>${safeValue(trade.exitPrice, 'number')}</td>
+        <td>${safeValue(trade.quantity, 'number')}</td>
+        <td>${safeValue(trade.investment, 'currency')}</td>
+        <td>${safeValue(trade.pnl, 'currency')}</td>
+        <td>${safeValue(trade.roi, 'percentage')}</td>
+        <td>${safeValue(trade.notes)}</td>
+        <td>
+          <button class="edit-button" data-id="${trade.id}">Edit</button>
+          <button class="delete-button" data-id="${trade.id}">Delete</button>
+        </td>
       `;
+
+      // Add event listeners to buttons
+      const editBtn = row.querySelector('.edit-button');
+      const deleteBtn = row.querySelector('.delete-button');
+      
+      if (editBtn) editBtn.addEventListener('click', () => openEditModal(trade));
+      if (deleteBtn) deleteBtn.addEventListener('click', () => deleteTrade(trade.id));
+
       tableBody.appendChild(row);
     });
   }
