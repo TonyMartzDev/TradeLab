@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.1.2] - 2025-02-27
+
+### Added
+- Backend Implementation
+  - Express server setup with SQLite database
+  - RESTful API endpoints for trades:
+    - GET /api/trades (all trades)
+    - GET /api/trades/recent (last 10 trades)
+    - GET /api/trades/:id (single trade)
+    - POST /api/trades (create trade)
+    - PUT /api/trades/:id (update trade)
+    - DELETE /api/trades/:id (delete trade)
+  - Database features:
+    - SQLite setup with trades table
+    - Automatic timestamps for created_at and updated_at
+    - Promise-based database operations
+  - Development tools:
+    - nodemon for auto-reloading
+    - morgan for HTTP request logging
+    - cors for handling cross-origin requests
+  - Error handling middleware
+  - Organized project structure with separate routes, controllers, and models
+
 ## [0.1.1] - 2025-02-27
 
 ### Added

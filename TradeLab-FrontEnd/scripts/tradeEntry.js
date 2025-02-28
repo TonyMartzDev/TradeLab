@@ -228,17 +228,23 @@ document.addEventListener("DOMContentLoaded", async function () {
     const confirmed = await showConfirmDialog('Are you sure you want to delete this trade?');
     if (confirmed) {
       try {
-        const index = window.tradeManager.trades.findIndex(t => t.id === tradeId);
-        if (index !== -1) {
-          window.tradeManager.trades.splice(index, 1);
-          await window.tradeManager.saveTrades();
-          generateTable(window.tradeManager.trades);
-          showNotification('Trade deleted successfully!', 'success');
-        }
+        await window.tradeAPI.deleteTrade(tradeId);
+        await loadRecentTrades();
+        showNotification('Trade deleted successfully!', 'success');
       } catch (error) {
         console.error('Error deleting trade:', error);
-        showNotification('Error deleting trade. Please try again.', 'error');
+        showNotification(error.message || 'Error deleting trade. Please try again.', 'error');
       }
+    }
+  }
+
+  async function loadRecentTrades() {
+    try {
+      const trades = await window.tradeAPI.getRecentTrades();
+      generateTable(trades);
+    } catch (error) {
+      console.error('Error loading trades:', error);
+      showNotification(error.message || 'Error loading trades. Please try again.', 'error');
     }
   }
 
@@ -285,6 +291,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   }
 
-  generateTable(window.tradeManager.trades);
+  // Load initial trades
+  loadRecentTrades();
 
 });
