@@ -16,6 +16,11 @@ app.use(morgan('dev')); // Logging middleware
 // Routes
 app.use('/api/trades', tradeRoutes);
 
+// Basic health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString().split('T')[0] });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -33,6 +38,7 @@ async function startServer() {
     await initializeDatabase();
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
+      console.log(`Health check available at http://localhost:${PORT}/health`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);

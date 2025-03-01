@@ -3,7 +3,8 @@ const API_CONFIG = {
   baseURL: 'http://localhost:3000/api', // Change this to your actual API base URL
   timeout: 5000,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
   }
 };
 
@@ -11,7 +12,7 @@ const API_CONFIG = {
 const api = axios.create(API_CONFIG);
 
 // Add request interceptor for handling tokens, etc.
-api.interceptors.request.use(
+const globalRequestInterceptor = api.interceptors.request.use(
   (config) => {
     // You can add auth tokens here when you implement authentication
     // const token = localStorage.getItem('token');
@@ -26,7 +27,7 @@ api.interceptors.request.use(
 );
 
 // Add response interceptor for handling errors
-api.interceptors.response.use(
+const globalResponseInterceptor = api.interceptors.response.use(
   (response) => response.data,
   (error) => {
     // Handle different error cases
@@ -49,22 +50,22 @@ api.interceptors.response.use(
 // Trade API endpoints
 const tradeAPI = {
   // Get all trades
-  getAllTrades: () => api.get('/trades'),
+  getAllTrades: () => api.get('/trades').then(res => res.data),
   
   // Get a specific trade
-  getTrade: (id) => api.get(`/trades/${id}`),
+  getTrade: (id) => api.get(`/trades/${id}`).then(res => res.data),
   
   // Create a new trade
-  createTrade: (tradeData) => api.post('/trades', tradeData),
+  createTrade: (tradeData) => api.post('/trades', tradeData).then(res => res.data),
   
   // Update a trade
-  updateTrade: (id, tradeData) => api.put(`/trades/${id}`, tradeData),
+  updateTrade: (id, tradeData) => api.put(`/trades/${id}`, tradeData).then(res => res.data),
   
   // Delete a trade
   deleteTrade: (id) => api.delete(`/trades/${id}`),
   
   // Get recent trades (last 10)
-  getRecentTrades: () => api.get('/trades/recent')
+  getRecentTrades: () => api.get('/trades/recent').then(res => res.data)
 };
 
 // Export the API objects

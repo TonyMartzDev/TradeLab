@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.3] - 2025-03-01
+
+### Added
+- Documentation
+  - Created comprehensive data flow architecture diagram
+  - Added detailed documentation for data flow between components
+  - Included examples of common operations (create, delete, view)
+
+### Changed
+- Backend Improvements
+  - Added health check endpoint with simplified date format
+  - Enhanced database initialization logging
+  - Organized backend structure with dedicated directories for future expansion
+  - Added detailed error messages for database operations
+
 ## [0.1.2] - 2025-02-27
 
 ### Added

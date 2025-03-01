@@ -72,6 +72,7 @@ async function initializeDatabase() {
   try {
     await run(tradeSql);
     console.log('Database initialized successfully');
+    console.log('Database location:', dbPath);
   } catch (err) {
     console.error('Error initializing database:', err);
     throw err;
