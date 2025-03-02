@@ -1,6 +1,6 @@
 // API configuration
 const API_CONFIG = {
-  baseURL: 'http://localhost:3000/api', // Change this to your actual API base URL
+  baseURL: '/api', // Using relative path since frontend is served from the same origin
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

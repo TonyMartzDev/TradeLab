@@ -13,8 +13,17 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev')); // Logging middleware
 
+// Serve static files from the frontend directory
+const frontendPath = path.join(__dirname, '../../TradeLab-FrontEnd');
+app.use(express.static(frontendPath));
+
 // Routes
 app.use('/api/trades', tradeRoutes);
+
+// Serve index.html for the root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+});
 
 // Basic health check endpoint
 app.get('/health', (req, res) => {
