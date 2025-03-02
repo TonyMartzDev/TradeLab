@@ -6,15 +6,39 @@ const dbPath = path.join(__dirname, 'tradelab.db');
 const db = new sqlite3.Database(dbPath);
 
 // Promisify database operations
+// DEBUG LOGGING FUNCTIONS - DELETE IN PRODUCTION
+function logQuery(sql, params) {
+  console.log('\n=== DEBUG: SQL QUERY ===');
+  console.log('SQL:', sql);
+  console.log('Parameters:', params);
+  console.log('=====================\n');
+}
+
+function logResult(operation, result) {
+  console.log('\n=== DEBUG: DATABASE RESULT ===');
+  console.log('Operation:', operation);
+  console.log('Result:', result);
+  console.log('============================\n');
+}
+
 function run(sql, params = []) {
   return new Promise((resolve, reject) => {
+    // DEBUG - Log the query
+    logQuery(sql, params);
+
     db.run(sql, params, function (err) {
       if (err) {
-        console.error('Error running sql ' + sql);
-        console.error(err);
+        console.error('\n=== DEBUG: DATABASE ERROR ===');
+        console.error('SQL:', sql);
+        console.error('Parameters:', params);
+        console.error('Error:', err);
+        console.error('==========================\n');
         reject(err);
       } else {
-        resolve({ id: this.lastID });
+        const result = { id: this.lastID };
+        // DEBUG - Log the result
+        logResult('INSERT/UPDATE/DELETE', result);
+        resolve(result);
       }
     });
   });
@@ -24,8 +48,11 @@ function get(sql, params = []) {
   return new Promise((resolve, reject) => {
     db.get(sql, params, (err, result) => {
       if (err) {
-        console.error('Error running sql ' + sql);
-        console.error(err);
+        console.error('\n=== DEBUG: DATABASE ERROR ===');
+        console.error('SQL:', sql);
+        console.error('Parameters:', params);
+        console.error('Error:', err);
+        console.error('==========================\n');
         reject(err);
       } else {
         resolve(result);
@@ -38,8 +65,11 @@ function all(sql, params = []) {
   return new Promise((resolve, reject) => {
     db.all(sql, params, (err, rows) => {
       if (err) {
-        console.error('Error running sql ' + sql);
-        console.error(err);
+        console.error('\n=== DEBUG: DATABASE ERROR ===');
+        console.error('SQL:', sql);
+        console.error('Parameters:', params);
+        console.error('Error:', err);
+        console.error('==========================\n');
         reject(err);
       } else {
         resolve(rows);

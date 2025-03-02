@@ -40,7 +40,17 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create new trade
+// DEBUG LOGGING - DELETE IN PRODUCTION
+function logTradeOperation(operation, data) {
+  console.log('\n=== DEBUG: TRADE OPERATION ===');
+  console.log('Operation:', operation);
+  console.log('Data:', JSON.stringify(data, null, 2));
+  console.log('============================\n');
+}
+
 router.post('/', async (req, res) => {
+  // DEBUG - Log incoming trade data
+  logTradeOperation('CREATE TRADE REQUEST', req.body);
   const {
     trade_id, // Frontend-generated ID
     date,
@@ -60,6 +70,9 @@ router.post('/', async (req, res) => {
     // Check if trade_id already exists
     const existingTrade = await get('SELECT id FROM trades WHERE trade_id = ?', [trade_id]);
     if (existingTrade) {
+      // DEBUG - Log duplicate trade attempt
+      logTradeOperation('TRADE CREATION REJECTED - DUPLICATE ID', { trade_id, existing_id: existingTrade.id });
+      
       return res.status(409).json({ message: 'Trade with this ID already exists' });
     }
 
@@ -72,6 +85,10 @@ router.post('/', async (req, res) => {
     );
     
     const newTrade = await get('SELECT * FROM trades WHERE id = ?', [result.id]);
+    
+    // DEBUG - Log successful trade creation
+    logTradeOperation('TRADE CREATED SUCCESSFULLY', newTrade);
+    
     res.status(201).json(newTrade);
   } catch (err) {
     res.status(500).json({ message: 'Error creating trade', error: err.message });
