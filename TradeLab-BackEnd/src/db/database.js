@@ -53,6 +53,7 @@ async function initializeDatabase() {
   const tradeSql = `
     CREATE TABLE IF NOT EXISTS trades (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      trade_id TEXT NOT NULL UNIQUE,
       date TEXT NOT NULL,
       symbol TEXT NOT NULL,
       direction TEXT NOT NULL,

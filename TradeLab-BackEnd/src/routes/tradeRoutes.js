@@ -25,7 +25,11 @@ router.get('/recent', async (req, res) => {
 // Get single trade
 router.get('/:id', async (req, res) => {
   try {
-    const trade = await get('SELECT * FROM trades WHERE id = ?', [req.params.id]);
+    // Try finding by trade_id first, then by database id
+    let trade = await get('SELECT * FROM trades WHERE trade_id = ?', [req.params.id]);
+    if (!trade) {
+      trade = await get('SELECT * FROM trades WHERE id = ?', [req.params.id]);
+    }
     if (!trade) {
       return res.status(404).json({ message: 'Trade not found' });
     }
@@ -38,6 +42,7 @@ router.get('/:id', async (req, res) => {
 // Create new trade
 router.post('/', async (req, res) => {
   const {
+    trade_id, // Frontend-generated ID
     date,
     symbol,
     direction,
@@ -52,12 +57,18 @@ router.post('/', async (req, res) => {
   } = req.body;
 
   try {
+    // Check if trade_id already exists
+    const existingTrade = await get('SELECT id FROM trades WHERE trade_id = ?', [trade_id]);
+    if (existingTrade) {
+      return res.status(409).json({ message: 'Trade with this ID already exists' });
+    }
+
     const result = await run(
       `INSERT INTO trades (
-        date, symbol, direction, market, entryPrice, exitPrice,
+        trade_id, date, symbol, direction, market, entryPrice, exitPrice,
         quantity, investment, pnl, roi, notes
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [date, symbol, direction, market, entryPrice, exitPrice, quantity, investment, pnl, roi, notes]
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [trade_id, date, symbol, direction, market, entryPrice, exitPrice, quantity, investment, pnl, roi, notes]
     );
     
     const newTrade = await get('SELECT * FROM trades WHERE id = ?', [result.id]);
