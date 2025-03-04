@@ -1,7 +1,7 @@
 import BaseDataHandler from './BaseDataHandler.js';
 
 class TradeObjectHandler extends BaseDataHandler {
-    constructor(storageType = 'indexeddb') {
+    constructor(storageType = localStorage.getItem('storageType')) {
         super(storageType);
         this.dbName = 'TradeLabDB';
         this.storeName = 'trades';
@@ -32,12 +32,6 @@ class TradeObjectHandler extends BaseDataHandler {
         });
     }
 
-    async initPostgres() {
-        // This would be implemented when setting up the PostgreSQL connection
-        // Typically using a library like 'pg' or 'node-postgres'
-        throw new Error('PostgreSQL implementation pending. Please use IndexedDB for now.');
-    }
-
     async create(tradeData) {
         if (!tradeData.tracked_account_id || !tradeData.ticker_symbol || !tradeData.direction) {
             throw new Error('Missing required trade data');
@@ -60,8 +54,9 @@ class TradeObjectHandler extends BaseDataHandler {
                 request.onerror = () => reject(request.error);
             });
         } else {
-            // PostgreSQL implementation
-            throw new Error('PostgreSQL implementation pending');
+            // SQLite implementation
+            // Send data to test server
+
         }
     }
 
@@ -188,5 +183,7 @@ class TradeObjectHandler extends BaseDataHandler {
         return trade.direction.toLowerCase() === 'long' ? profitLoss : -profitLoss;
     }
 }
+
+window.TradeObjectHandler = TradeObjectHandler;
 
 export default TradeObjectHandler;

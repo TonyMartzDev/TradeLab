@@ -19,7 +19,7 @@ const globalRequestInterceptor = api.interceptors.request.use(
     // if (token) {
     //   config.headers.Authorization = `Bearer ${token}`;
     // }
-    console.log('Intercepted request:', config)
+    console.log('Intercepted request:', config);
     return config;
   },
   (error) => {
@@ -57,7 +57,7 @@ const tradeAPI = {
   getTrade: (id) => api.get(`/trades/${id}`).then(res => res.data),
   
   // Create a new trade
-  createTrade: (tradeData) => api.post('/trades', tradeData).then(res => res.data),
+  createTrade: (tradeData) => api.post('/trades', tradeData).then(res => console.log(res)),
   
   // Update a trade
   updateTrade: (id, tradeData) => api.put(`/trades/${id}`, tradeData).then(res => res.data),

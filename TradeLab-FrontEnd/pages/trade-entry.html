@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="module" src="../scripts/notifications.js"></script>
 </head>
 
 <body>
@@ -147,12 +148,12 @@
           <form id="tradeForm">
             <div class="form-group">
               <label for="symbol">Symbol:</label>
-              <input type="text" id="symbol" required placeholder="e.g., AAPL" />
+              <input type="text" id="symbol" name="symbol" required placeholder="e.g., AAPL" />
             </div>
 
             <div class="form-group">
               <label for="market">Market:</label>
-              <select id="market" required>
+              <select id="market" name="market" required>
                 <option value="stock">Stock</option>
                 <option value="futures">Futures</option>
                 <!-- <option value="forex">Forex</option> -->
@@ -163,22 +164,22 @@
 
             <div class="form-group">
               <label for="entryPrice">Entry Price:</label>
-              <input type="text" id="entryPrice" required />
+              <input type="text" id="entryPrice" name="entryPrice" required />
             </div>
 
             <div class="form-group">
               <label for="exitPrice">Exit Price:</label>
-              <input type="text" id="exitPrice" required />
+              <input type="text" id="exitPrice" name="exitPrice" required />
             </div>
 
             <div class="form-group">
               <label for="quantity">Quantity:</label>
-              <input type="text" id="quantity" required />
+              <input type="text" id="quantity" name="quantity" required />
             </div>
 
             <div class="form-group">
               <label for="date">Date:</label>
-              <input type="date" id="date" required />
+              <input type="date" id="date" name="date" required />
             </div>
 
             <div class="form-group">
@@ -191,12 +192,12 @@
                   ▼ SHORT
                 </button>
               </div>
-              <input type="hidden" id="direction" value="long" required />
+              <input type="hidden" id="direction" value="long" name="direction" required />
             </div>
 
             <div class="form-group">
               <label for="notes">Notes:</label>
-              <textarea id="notes" rows="4" placeholder="Add your trade notes here..."></textarea>
+              <textarea id="notes" rows="4" name="notes" placeholder="Add your trade notes here..."></textarea>
             </div>
 
             <button type="submit" class="btn-submit">Add Trade</button>
@@ -416,7 +417,6 @@
 
   <script src="../scripts/global.js"></script>
   <!-- <script src="../scripts/theme.js"></script> -->
-  <script src="../scripts/tradeEntry.js"></script>
   <script src="../scripts/sidebar.js"></script>
   <!-- <script src="../scripts/TradeObjectHandler.js"></script> -->
   <!-- <script src="../scripts/tradeModal.js"></script> -->
@@ -438,6 +438,7 @@
       </div>
     </div>
   </div>
+  <script type="module" src="../scripts/tradeEntry.js"></script>
 </body>
 
 </html>
