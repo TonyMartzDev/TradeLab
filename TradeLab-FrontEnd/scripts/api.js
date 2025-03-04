@@ -70,4 +70,4 @@ const tradeAPI = {
 };
 
 // Export the API objects
-window.tradeAPI = tradeAPI;
+export { tradeAPI };

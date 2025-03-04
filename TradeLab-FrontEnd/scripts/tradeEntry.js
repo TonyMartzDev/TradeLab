@@ -1,4 +1,6 @@
-import { showSuccessMessage, showErrorMessage, showWarningMessage } from './notifications.js';
+import { showSuccessMessage, showErrorMessage, showWarningMessage, showInfoMessage } from './notifications.js';
+import TradeObjectHandler from './data/TradeObjectHandler.js';
+import { tradeAPI } from './api.js';
 
 document.addEventListener("DOMContentLoaded", async function () {
   // Get modal elements
@@ -30,6 +32,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   const notes = document.getElementById("notes");
   const long = document.querySelector(".direction-btn.long");
   const short = document.querySelector(".direction-btn.short");
+
+  // Global 
+  const api = tradeAPI;
+  const tradeObjectHandler = new TradeObjectHandler();
 
   // Helper functions
   function formatDate(dateString) {
@@ -98,7 +104,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Check storage option first
     if (localStorage.getItem("storageType") ? "indexedDB" : "indexeddb") {
       try {
-        await window.TradeObjectHandler.create(tradeData);
+        await tradeObjectHandler.create(tradeData);
         // tradeForm.reset();
       }
       catch (error) {
@@ -307,16 +313,27 @@ document.addEventListener("DOMContentLoaded", async function () {
     const loadingNotification = showInfoMessage('Loading recent trades...', true);
     
     try {
-      const trades = await window.tradeAPI.getRecentTrades();
+      let trades;
+      if (localStorage.getItem("indexedDB")) {
+        // Use IndexedDB
+        if (!tradeObjectHandler.db) {
+          await tradeObjectHandler.init();
+        }
+        trades = await tradeObjectHandler.getAll() || [];
+      } else {
+        // Use SQLite via API
+        const response = await api.getRecentTrades();
+        trades = response || [];
+      }
       generateTable(trades);
       // Remove loading notification and show success
-      loadingNotification.hide();
+      loadingNotification;
       showSuccessMessage('Trades loaded successfully');
     } catch (error) {
       console.error("Error loading trades:", error);
-      showNotification(
-        error.message || "Error loading trades. Please try again.",
-        "error"
+      loadingNotification;
+      showErrorNotification(
+        error.message || "Error loading trades. Please try again."
       );
     }
   }
