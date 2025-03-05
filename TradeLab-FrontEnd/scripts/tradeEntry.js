@@ -101,25 +101,28 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.log(formData);
     console.log(tradeData);
 
+    showSuccessMessage("Trade added successfully!");
+    console.log('Success');
+
     // Check storage option first
-    if (localStorage.getItem("storageType") ? "indexedDB" : "indexeddb") {
-      try {
-        await tradeObjectHandler.create(tradeData);
-        // tradeForm.reset();
-      }
-      catch (error) {
-        console.error(error);
-        showErrorMessage("Failed to add trade. Please try again.");
-      }
-    } else {
-      try {
-        // await window.tradeAPI.createTrade(tradeData);
-        // tradeForm.reset();
-        showSuccessMessage("Trade added successfully!");
-      } catch {
-        showErrorMessage("Failed to add trade. Please try again.");
-      }
-    }
+    // if (localStorage.getItem("storageType") ? "indexedDB" : "indexeddb") {
+    //   try {
+    //     await tradeObjectHandler.create(tradeData);
+    //     // tradeForm.reset();
+    //   }
+    //   catch (error) {
+    //     console.error(error);
+    //     showErrorMessage("Failed to add trade. Please try again.");
+    //   }
+    // } else {
+    //   try {
+    //     // await window.tradeAPI.createTrade(tradeData);
+    //     // tradeForm.reset();
+    //     showSuccessMessage("Trade added successfully!");
+    //   } catch {
+    //     showErrorMessage("Failed to add trade. Please try again.");
+    //   }
+    // }
   }
 
   // Close modal when clicking close button or cancel

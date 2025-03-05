@@ -12,41 +12,41 @@ const API_CONFIG = {
 const api = axios.create(API_CONFIG);
 
 // Add request interceptor for handling tokens, etc.
-const globalRequestInterceptor = api.interceptors.request.use(
-  (config) => {
-    // You can add auth tokens here when you implement authentication
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
-    console.log('Intercepted request:', config);
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+// const globalRequestInterceptor = api.interceptors.request.use(
+//   (config) => {
+//     // You can add auth tokens here when you implement authentication
+//     // const token = localStorage.getItem('token');
+//     // if (token) {
+//     //   config.headers.Authorization = `Bearer ${token}`;
+//     // }
+//     console.log('Intercepted request:', config);
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 
 // Add response interceptor for handling errors
-const globalResponseInterceptor = api.interceptors.response.use(
-  (response) => response.data,
-  (error) => {
-    // Handle different error cases
-    if (error.response) {
-      // Server responded with error status
-      console.error('API Error:', error.response.data);
-      throw new Error(error.response.data.message || 'An error occurred');
-    } else if (error.request) {
-      // Request made but no response
-      console.error('Network Error:', error.request);
-      throw new Error('Network error. Please check your connection.');
-    } else {
-      // Error in request configuration
-      console.error('Request Error:', error.message);
-      throw new Error('Request configuration error.');
-    }
-  }
-);
+// const globalResponseInterceptor = api.interceptors.response.use(
+//   (response) => response.data,
+//   (error) => {
+//     // Handle different error cases
+//     if (error.response) {
+//       // Server responded with error status
+//       console.error('API Error:', error.response.data);
+//       throw new Error(error.response.data.message || 'An error occurred');
+//     } else if (error.request) {
+//       // Request made but no response
+//       console.error('Network Error:', error.request);
+//       throw new Error('Network error. Please check your connection.');
+//     } else {
+//       // Error in request configuration
+//       console.error('Request Error:', error.message);
+//       throw new Error('Request configuration error.');
+//     }
+//   }
+// );
 
 // Trade API endpoints
 const tradeAPI = {

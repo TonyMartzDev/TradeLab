@@ -2,7 +2,7 @@
  * Base class for data handling operations
  */
 class BaseDataHandler {
-    constructor(storageType = 'indexeddb') {
+    constructor(storageType = localStorage.getItem('storagePreference') || 'indexeddb') {
         this.storageType = storageType.toLowerCase();
         if (!['indexeddb', 'postgres'].includes(this.storageType)) {
             throw new Error('Invalid storage type. Must be either "indexeddb" or "postgres"');

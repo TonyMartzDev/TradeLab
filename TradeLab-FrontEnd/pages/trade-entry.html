@@ -145,7 +145,7 @@
       <div class="content-body">
         <div class="trade-form">
           <h2>Add New Trade</h2>
-          <form id="tradeForm">
+          <form id="tradeForm" action="/api/trades" method="POST">
             <div class="form-group">
               <label for="symbol">Symbol:</label>
               <input type="text" id="symbol" name="symbol" required placeholder="e.g., AAPL" />

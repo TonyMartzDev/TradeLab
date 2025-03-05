@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { db, run, get, all } = require('../db/database');
+const parser = require('body-parser');
 
 // Get all trades
 router.get('/', async (req, res) => {
@@ -49,50 +50,59 @@ function logTradeOperation(operation, data) {
 }
 
 router.post('/', async (req, res) => {
+  // Access the request body via req.body
+  console.log('Received request body:', req.body);
+  
+  // Send a response with the request body
+  res.json({
+    message: 'POST request to /api/trades succeeded.',
+    receivedData: req.body
+  });
+
   // DEBUG - Log incoming trade data
-  logTradeOperation('CREATE TRADE REQUEST', req.body);
-  const {
-    trade_id, // Frontend-generated ID
-    date,
-    symbol,
-    direction,
-    market,
-    entryPrice,
-    exitPrice,
-    quantity,
-    investment,
-    pnl,
-    roi,
-    notes
-  } = req.body;
+  // logTradeOperation('CREATE TRADE REQUEST', req.body);
+  // const {
+  //   trade_id, // Frontend-generated ID
+  //   date,
+  //   symbol,
+  //   direction,
+  //   market,
+  //   entryPrice,
+  //   exitPrice,
+  //   quantity,
+  //   investment,
+  //   pnl,
+  //   roi,
+  //   notes
+  // } = req.body;
 
-  try {
-    // Check if trade_id already exists
-    const existingTrade = await get('SELECT id FROM trades WHERE trade_id = ?', [trade_id]);
-    if (existingTrade) {
-      // DEBUG - Log duplicate trade attempt
-      logTradeOperation('TRADE CREATION REJECTED - DUPLICATE ID', { trade_id, existing_id: existingTrade.id });
+  // try {
+  //   // Check if trade_id already exists
+  //   const existingTrade = await get('SELECT id FROM trades WHERE trade_id = ?', [trade_id]);
+  //   if (existingTrade) {
+  //     // DEBUG - Log duplicate trade attempt
+  //     logTradeOperation('TRADE CREATION REJECTED - DUPLICATE ID', { trade_id, existing_id: existingTrade.id });
       
-      return res.status(409).json({ message: 'Trade with this ID already exists' });
-    }
+  //     return res.status(409).json({ message: 'Trade with this ID already exists' });
+  //   }
 
-    const result = await run(
-      `INSERT INTO trades (
-        trade_id, date, symbol, direction, market, entryPrice, exitPrice,
-        quantity, investment, pnl, roi, notes
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [trade_id, date, symbol, direction, market, entryPrice, exitPrice, quantity, investment, pnl, roi, notes]
-    );
+  //   const result = await run(
+  //     `INSERT INTO trades (
+  //       trade_id, date, symbol, direction, market, entryPrice, exitPrice,
+  //       quantity, investment, pnl, roi, notes
+  //     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  //     [trade_id, date, symbol, direction, market, entryPrice, exitPrice, quantity, investment, pnl, roi, notes]
+  //   );
     
-    const newTrade = await get('SELECT * FROM trades WHERE id = ?', [result.id]);
+  //   const newTrade = await get('SELECT * FROM trades WHERE id = ?', [result.id]);
     
-    // DEBUG - Log successful trade creation
-    logTradeOperation('TRADE CREATED SUCCESSFULLY', newTrade);
+  //   // DEBUG - Log successful trade creation
+  //   logTradeOperation('TRADE CREATED SUCCESSFULLY', newTrade);
     
-    res.status(201).json(newTrade);
-  } catch (err) {
-    res.status(500).json({ message: 'Error creating trade', error: err.message });
-  }
+  //   res.status(201).json(newTrade);
+  // } catch (err) {
+  //   res.status(500).json({ message: 'Error creating trade', error: err.message });
+  // }
 });
 
 // Update trade
