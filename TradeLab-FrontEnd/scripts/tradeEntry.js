@@ -104,6 +104,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     showSuccessMessage("Trade added successfully!");
     console.log('Success');
 
+    tradeAPI.createTrade(tradeData);
+
     // Check storage option first
     // if (localStorage.getItem("storageType") ? "indexedDB" : "indexeddb") {
     //   try {

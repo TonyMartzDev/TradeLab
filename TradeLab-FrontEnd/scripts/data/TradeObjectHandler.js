@@ -2,6 +2,7 @@ import BaseDataHandler from "./BaseDataHandler.js";
 import { tradeAPI } from "../api.js";
 import { showErrorMessage, showSuccessMessage } from "../notifications.js";
 
+const tradeManager = new TradeObjectHandler();
 class Trade {
   constructor(
     symbol,
@@ -13,7 +14,7 @@ class Trade {
     notes,
     direction
   ) {
-    this.id = Date.now().toString() + Math.random().toString(36).substr(2, 9); // More unique ID
+    this.trade_id = date;
     this.symbol = symbol;
     this.market = market.charAt(0).toUpperCase() + market.slice(1);
     this.entryPrice = parseFloat(entryPrice);
@@ -193,7 +194,7 @@ class Trade {
   // Add a method to convert to a plain object for storage
   toStorageObject() {
     return {
-      id: this.id,
+      trade_id: this.trade_id,
       symbol: this.symbol,
       market: this.market,
       entryPrice: this.entryPrice,
@@ -230,7 +231,7 @@ class Trade {
       obj.notes,
       obj.direction
     );
-    trade.id = obj.id; // Preserve the original ID
+    trade.trade_id = obj.trade_id; // Preserve the original ID
     // Restore other properties
     trade.profitLoss = obj.profitLoss;
     trade.investment = obj.investment;
@@ -269,7 +270,7 @@ class IndexedDBStrategy extends StorageStrategy {
       request.onupgradeneeded = (event) => {
         const db = event.target.result;
         if (!db.objectStoreNames.contains(this.storeName)) {
-          db.createObjectStore(this.storeName, { keyPath: "id" });
+          db.createObjectStore(this.storeName, { keyPath: "trade_id" });
         }
       };
     });
@@ -488,13 +489,13 @@ class TradeObjectHandler extends BaseDataHandler {
     const tbody = document.querySelector("#tradesTable tbody");
     if (!tbody) return;
 
-    tbody.innerHTML = '';
+    tbody.innerHTML = "";
 
     // Use provided trades or use this.trades
     const tradesToDisplay = trades || this.trades;
     if (!tradesToDisplay || Array.isArray(tradesToDisplay)) {
-      console.log('No trades to display');
-      showErrorMessage('No trades to display.');
+      console.log("No trades to display");
+      showErrorMessage("No trades to display.");
       return;
     }
 
@@ -503,14 +504,16 @@ class TradeObjectHandler extends BaseDataHandler {
       .sort((a, b) => new Date(b.date) - new Date(a.date))
       .slice(0, 10);
 
-    recentTrades.forEach(tradeCopy => {
+    recentTrades.forEach((tradeCopy) => {
       const formattedDate = new Date(tradeCopy.date).toLocaleDateString();
-      const tr = document.createElement('tr');
+      const tr = document.createElement("tr");
 
       tr.innerHTML = `
                 <td>${formattedDate}</td>
         <td class="symbol">
-          <a href="#" class="symbol-link" data-symbol="${tradeCopy.symbol}">${tradeCopy.symbol.toUpperCase()}</a>
+          <a href="#" class="symbol-link" data-symbol="${
+            tradeCopy.symbol
+          }">${tradeCopy.symbol.toUpperCase()}</a>
         </td>
                 <td>
           <span class="direction-badge ${tradeCopy.direction}">
@@ -523,60 +526,71 @@ class TradeObjectHandler extends BaseDataHandler {
         <td>${tradeCopy.quantity}</td>
         <td>$${tradeCopy.investment.toFixed(2)}</td>
         <td class="${tradeCopy.profitLoss >= 0 ? "profit" : "loss"}">
-          ${tradeCopy.profitLoss >= 0 ? "+" : ""}$${tradeCopy.profitLoss.toFixed(2)}
+          ${
+            tradeCopy.profitLoss >= 0 ? "+" : ""
+          }$${tradeCopy.profitLoss.toFixed(2)}
                     </td>
         <td class="${tradeCopy.profitLoss >= 0 ? "profit" : "loss"}">
-          ${tradeCopy.profitLoss >= 0 ? "+" : ""}${tradeCopy.profitLossPercentage.toFixed(2)}%
+          ${
+            tradeCopy.profitLoss >= 0 ? "+" : ""
+          }${tradeCopy.profitLossPercentage.toFixed(2)}%
                 </td>
         <td class="notes">${tradeCopy.notes || "-"}</td>
         <td class="actions-cell">
-          <button class="edit-trade-btn" data-trade-id="${tradeCopy.id}" title="Edit Trade">
+          <button class="edit-trade-btn" data-trade-trade_id="${
+            tradeCopy.trade_id
+          }" title="Edit Trade">
             <i class="fas fa-edit"></i>
           </button>
-          <button class="delete-trade-btn" data-trade-id="${tradeCopy.id}" title="Delete Trade">
+          <button class="delete-trade-btn" data-trade-trade_id="${
+            tradeCopy.trade_id
+          }" title="Delete Trade">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
             `;
 
-      const deleteBtn = tr.querySelector('.edit-trade-btn');
-      deleteBtn.addEventListener('click', async (e) => {
+      const deleteBtn = tr.querySelector(".edit-trade-btn");
+      deleteBtn.addEventListener("click", async (e) => {
         e.preventDefault();
-        if (confirm('Are you sure you want to edit this trade?')) {
-          const tradeId = e.currentTarget.getAttribute('data-trade-id');
+        if (confirm("Are you sure you want to edit this trade?")) {
+          const tradeId = e.currentTarget.getAttribute("data-trade-trade_id");
           await this.deleteTrade(tradeId);
         }
       });
 
       // Add editBtn event listener
-      const editBtn = tr.querySelector('.edit-trade-btn');
-      editBtn.addEventListener('click', async (e) => {
+      const editBtn = tr.querySelector(".edit-trade-btn");
+      editBtn.addEventListener("click", async (e) => {
         e.preventDefault();
-        const tradeId = e.currentTarget.getAttribute('data-trade-id');
-        const trade = this.trades.find(t => t.id === tradeId);
+        const tradeId = e.currentTarget.getAttribute("data-trade-trade_id");
+        const trade = this.trades.find((t) => t.trade_id === tradeId);
         if (trade) {
-          const editModal = document.getElementById('editTradeModal');
-          const editForm = document.getElementById('editTradeForm');
+          const editModal = document.getElementById("editTradeModal");
+          const editForm = document.getElementById("editTradeForm");
 
           // Populate form fields
-          document.getElementById('editTradeId').value = trade.id;
-          document.getElementById('editDate').value = new Date(trade.date).toISOString().split('T')[0];
-          document.getElementById('editSymbol').value = trade.symbol;
-          document.getElementById('editDirection').value = trade.direction.charAt(0).toUpperCase() + trade.direction.slice(1);
-          document.getElementById('editMarket').value = trade.market;
-          document.getElementById('editEntryPrice').value = trade.entryPrice;
-          document.getElementById('editExitPrice').value = trade.exitPrice;
-          document.getElementById('editQuantity').value = trade.quantity;
-          document.getElementById('editNotes').value = trade.notes || '';
+          document.getElementById("editTradeId").value = trade.trade_id;
+          document.getElementById("editDate").value = new Date(trade.date)
+            .toISOString()
+            .split("T")[0];
+          document.getElementById("editSymbol").value = trade.symbol;
+          document.getElementById("editDirection").value =
+            trade.direction.charAt(0).toUpperCase() + trade.direction.slice(1);
+          document.getElementById("editMarket").value = trade.market;
+          document.getElementById("editEntryPrice").value = trade.entryPrice;
+          document.getElementById("editExitPrice").value = trade.exitPrice;
+          document.getElementById("editQuantity").value = trade.quantity;
+          document.getElementById("editNotes").value = trade.notes || "";
 
           // Show modal
-          editModal.style.display = 'block';
+          editModal.style.display = "block";
         }
       });
 
       // Add symbol click handler
-      const symbolLink = tr.querySelector('.symbol-link');
-      symbolLink.addEventListener('click', (e) => {
+      const symbolLink = tr.querySelector(".symbol-link");
+      symbolLink.addEventListener("click", (e) => {
         e.preventDefault();
         const symbol = e.target.dataset.symbol;
         if (window.tradeModal) {
@@ -587,7 +601,6 @@ class TradeObjectHandler extends BaseDataHandler {
       tbody.appendChild(tr);
     });
   }
-
 
   async query(criteria) {
     if (this.storageType === "indexeddb") {
@@ -681,27 +694,131 @@ class TradeObjectHandler extends BaseDataHandler {
     return trade.direction.toLowerCase() === "long" ? profitLoss : -profitLoss;
   }
 
-  async loadTrades() {
-    if (this.storageType === "indexeddb") {
-      return new Promise((resolve, reject) => {
-        const transaction = this.db.transaction([this.storeName], "readonly");
-        const store = transaction.objectStore(this.storeName);
-        const request = store.getAll();
+  // Data management methods
+  async exportTrades(format = "json") {
+    const data = JSON.stringify(this.trades, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
 
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      });
-    } else {
-      // SQLite implementation
-      try {
-        const response = await tradeAPI.getAllTrades();
-        return response.data;
-      } catch (error) {
-        console.error("Error fetching trades from SQLite:", error);
-        return [];
-      }
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `trades_export_${new Date().toISOString().split("T")[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  async importTrades(jsonData) {
+    try {
+      const newTrades = JSON.parse(jsonData);
+      this.trades = [...newTrades, ...this.trades];
+      await this.saveTrades();
+      this.displayTrades();
+    } catch (error) {
+      console.error("Error importing trades:", error);
+      throw new Error("Invalid trade data format");
     }
   }
+
+  async importFromExcel(file) {
+    try {
+      console.log("Starting Excel import...");
+      const importedTrades = await ExcelStorageStrategy.importFromExcel(file);
+      console.log("Imported trades:", importedTrades);
+
+      if (!importedTrades || !Array.isArray(importedTrades)) {
+        throw new Error("No valid trades were imported");
+      }
+
+      // Add the new trades to the existing trades
+      this.trades = [...importedTrades, ...this.trades];
+      console.log("Updated trades array:", this.trades);
+
+      // Save the updated trades
+      await this.saveTrades();
+
+      // Update the display
+      this.displayTrades();
+
+      return importedTrades.length; // Return the number of imported trades
+    } catch (error) {
+      console.error("Error importing trades:", error);
+      throw new Error(`Failed to import trades: ${error.message}`);
+    }
+  }
+
+  async clearAllTrades() {
+    this.trades = [];
+    await this.saveTrades();
+    this.displayTrades();
+  }
+
+  async deleteTrade(tradeId) {
+    this.trades = this.trades.filter((trade) => trade.id !== tradeId);
+    await this.saveTrades();
+    this.displayTrades();
+  }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  tradeManager.loadTrades();
+
+  // Set default date to today in trade form if it exists
+  const dateInput = document.getElementById("date");
+  if (dateInput) {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+
+    dateInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
+  // Add form submission handler if form exists
+  const tradeForm = document.getElementById("tradeForm");
+  if (tradeForm) {
+    tradeForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const trade = new Trade(
+        document.getElementById("symbol").value,
+        document.getElementById("market").value,
+        parseFloat(document.getElementById("entryPrice").value),
+        parseFloat(document.getElementById("exitPrice").value),
+        parseFloat(document.getElementById("quantity").value),
+        document.getElementById("date").value,
+        document.getElementById("notes").value,
+        document.getElementById("direction").value
+      );
+
+      await tradeManager.addTrade(trade);
+      event.target.reset();
+
+      // Set the date input back to current time
+      if (dateInput) {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const day = String(now.getDate()).padStart(2, "0");
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+
+        dateInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+      }
+    });
+  }
+
+  // Add file input handler for Excel import
+  const excelInput = document.getElementById("excelInput");
+  if (excelInput) {
+    excelInput.addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      await tradeManager.importFromExcel(file);
+    });
+  }
+});
 
 export default TradeObjectHandler;
